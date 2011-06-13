@@ -1,0 +1,824 @@
+2006-02-02  Keith Packard  <keithp@keithp.com>
+
+	* twin_fedit/twin-fedit.c: (dot), (spot):
+	Eliminate spurious segment by moving to initial arc point
+	(sigh).
+
+2006-02-02  Carl Worth  <cworth@cworth.org>
+
+	* twin_fedit/Makefile: Add x11 as a required package, (cairo no
+	longer pulls this in by default).
+	
+	* twin_fedit/twin-fedit.c: (init), (read_char), (dot), (spot),
+	(draw_char), (pos_to_cmd), (replace_with_spline), (main): Track
+	changes in cairo API to bring forward to be compatible with cairo
+	1.0.x. Remove some unused variables.
+	
+	* twin_fedit/twin-fedit.h: Add missing includes of cairo-xlib.h,
+	X11/Xutil.h, and string.h.
+	
+	* twin_fedit/twin-sfit.c: (new_pts), (add_pt), (fit): Add missing
+	return value and remove unused variables.
+
+2004-10-29  Keith Packard  <keithp@keithp.com>
+
+	* Makefile.am:
+	add demoline + demospline
+	
+	* twin.h:
+	* twin_box.c: (_twin_box_dispatch):
+	* twin_clock.c: (twin_clock_hand), (_twin_clock_face):
+	* twin_convolve.c: (_twin_subpath_convolve):
+	* twin_demo.c: (twin_line_start), (twin_circletext_start),
+	* twin_draw.c: (twin_composite):
+	* twin_font.c: (_twin_text_compute_pen):
+	* twin_label.c: (_twin_label_paint), (_twin_label_init):
+	* twin_path.c: (twin_path_circle), (twin_path_ellipse),
+	(twin_path_arc), (twin_path_rectangle),
+	(twin_path_rounded_rectangle), (twin_path_lozenge),
+	(twin_path_tab), (twin_path_set_cap_style),
+	(twin_path_current_cap_style), (twin_path_create),
+	(twin_composite_stroke):
+	(twin_quickbrown_start), (twin_ascii_start), (twin_demo_start):
+	* twin_widget.c: (_twin_path_shape), (_twin_widget_paint_shape),
+	(_twin_widget_paint), (_twin_widget_init),
+	(_twin_path_bevel_shape):
+	* twinint.h:
+	Add cap styles, widget shapes, text alignment and arcs
+	Change circle/ellipse API.
+	
+	* twin_button.c: (_twin_button_dispatch):
+	Capture button events.
+	
+	* twin_calc.c: (twin_calc_start):
+	Use Lozenge shape for output
+	
+	* twin_demoline.c: (_twin_demoline_paint),
+	(_twin_demoline_update_pos), (_twin_demoline_hit),
+	(_twin_demoline_dispatch), (_twin_demoline_init),
+	(twin_demoline_create), (twin_demoline_start):
+	* twin_demoline.h:
+	Drag lines with the mouse
+	
+	* twin_demospline.c: (_twin_demospline_paint),
+	(_twin_demospline_update_pos), (_twin_demospline_hit),
+	(_twin_demospline_dispatch), (_twin_demospline_init),
+	(twin_demospline_create), (twin_demospline_start):
+	* twin_demospline.h:
+	drag splines with the mouse
+	
+	* twin_glyphs.c:
+	move '1' right a bit
+	
+	* twin_toplevel.c: (_twin_toplevel_event):
+	Convert dispatch result to boool
+	
+	* twin_window.c: (twin_window_create), (twin_window_dispatch):
+	was mis-computing delegate and crashing when window->event was NULL
+	
+	* twin_x11.c: (twin_x11_read_events):
+	Map X button info to twin mask
+	
+	* xtwin.c: (main):
+	draw different stuff.
+
+2004-10-27  Keith Packard  <keithp@keithp.com>
+
+	* twin_box.c: (_twin_box_dispatch):
+	Boxes have no paint
+	
+	* twin_clock.c: (twin_clock_set_transform), (twin_clock_hand),
+	(_twin_clock_face), (_twin_clock_interval), (_twin_clock_paint),
+	(_twin_clock_timeout), (_twin_clock_dispatch), (_twin_clock_init),
+	(twin_clock_create), (twin_clock_start):
+	* twin_clock.h:
+	Convert to a widget
+	
+	* twin_widget.c: (_twin_widget_paint):
+	Always paint background, even if transparent
+	
+	* xtwin.c: (main):
+	show clock widget
+
+2004-10-27  Keith Packard  <keithp@keithp.com>
+
+	* Makefile.am:
+	Add calculator and missing header files
+	
+	* twin.h:
+	* twin_box.c: (_twin_box_init), (_twin_box_query_geometry),
+	(_twin_box_configure), (_twin_box_dispatch), (twin_box_create):
+	* twin_button.c: (_twin_button_dispatch), (_twin_button_init):
+	* twin_toplevel.c: (_twin_toplevel_init):
+	* twin_widget.c: (_twin_widget_dispatch), (_twin_widget_init),
+	* twin_label.c: (_twin_label_query_geometry),
+	(_twin_label_dispatch), (_twin_label_init):
+	* twinint.h:
+	(twin_widget_create):
+	Change type name from twin_layout_t to twin_box_dir_t
+	Create new twin_widget_layout_t holding layout preferences.
+	Add copy_geom field to widget to make widgets look the same
+	Add button signals and signal proc.
+	Fix box layout to sum stretch along axis and minimize normal
+	
+	* twin_calc.c: (_twin_calc_button_to_id),
+	(_twin_calc_update_value), (_twin_calc_push), (_twin_calc_pop),
+	(_twin_calc_digit), (_twin_calc_button_signal), (twin_calc_start):
+	* twin_calc.h:
+	* xtwin.c: (main):
+	Add calculator demo
+
+2004-10-26  Keith Packard  <keithp@keithp.com>
+
+	* twin_button.c: (_twin_button_paint):
+	* twin_widget.c: (_twin_widget_bevel):
+	* twinint.h:
+	Move bevel routine to twin_widget for sharing
+	
+	* twin_dispatch.c: (twin_dispatch):
+	Change order of timeout vs work, making work come last as
+	that's where redisplay occurs.
+	
+	* twin_draw.c: (twin_fill):
+	Oops.  Argument order wrong in twin_pixmap_damage call
+	
+	* twin_hello.c: (twin_hello_start):
+	Make button italic to test
+	
+	* twin_pixmap.c: (twin_pixmap_damage):
+	Change names of formals to match prototype
+	
+2004-10-26  Keith Packard  <keithp@keithp.com>
+
+	* twin_button.c: (_twin_button_paint):
+	Paint polygons instead of stroked lines for button edges
+	
+	* twin_font.c: (_twin_text_compute_info):
+	Snap origin to pixel grid
+	
+	* twin_hello.c: (_twin_hello_timeout):
+	Strip newline from ctime output
+
+2004-10-26  Keith Packard  <keithp@keithp.com>
+
+	* Makefile.am:
+	* twin_button.c: (_twin_button_paint),
+	(_twin_button_set_label_offset), (_twin_button_dispatch),
+	(_twin_button_init), (twin_button_create):
+	Add button widget
+	
+	* twin.h:
+	* twinint.h:
+	Grab button down inside client area.
+	Add button widget
+	
+	* twin_hello.c: (twin_hello_start):
+	* twin_hello.h:
+	Test button widget
+	
+	* twin_label.c: (_twin_label_paint), (_twin_label_init),
+	(twin_label_create):
+	Permit subclassing; add offset to make text shift in button
+	
+	* twin_widget.c: (_twin_widget_contains):
+	Add _twin_widget_contains to test inclusion
+	
+	* twin_window.c: (twin_window_create), (twin_window_dispatch):
+	Grab button down inside client area 
+	
+	* xtwin.c: (main):
+	Make hello window larger
+
+2004-10-25  Keith Packard  <keithp@keithp.com>
+
+	* Makefile.am:
+	* twin.h:
+	* twin_box.c: (_twin_box_init), (_twin_box_query_geometry),
+	(_twin_box_configure), (_twin_box_xy_to_widget),
+	(_twin_box_dispatch), (twin_box_create):
+	* twin_label.c: (_twin_label_query_geometry), (_twin_label_paint),
+	(_twin_label_dispatch), (twin_label_set), (_twin_label_init),
+	(twin_label_create):
+	* twin_toplevel.c: (_twin_toplevel_dispatch),
+	(_twin_toplevel_event), (_twin_toplevel_draw),
+	(_twin_toplevel_destroy), (_twin_toplevel_init),
+	(twin_toplevel_create), (_twin_toplevel_paint),
+	(_twin_toplevel_queue_paint), (_twin_toplevel_layout),
+	(_twin_toplevel_queue_layout), (twin_toplevel_show):
+	* twin_widget.c: (_twin_widget_paint), (_twin_widget_dispatch),
+	(_twin_widget_init), (_twin_widget_queue_paint),
+	(_twin_widget_queue_layout), (twin_widget_create),
+	(twin_widget_set):
+	* twinint.h:
+	Add initial widget implementation.
+	
+	* twin_glyphs.c:
+	Fix numbers to have the same width.
+
+	* twin_pixmap.c: (twin_pixmap_set_clip):
+	Add new relative-origin clip setting function
+	
+	* twin_screen.c: (twin_screen_set_active), (twin_screen_dispatch):
+	* twin_window.c: (twin_window_create), (twin_window_style_size),
+	(twin_window_draw), (twin_window_dispatch):
+	* twin_x11.c: (twin_x11_read_events):
+	* twin_clock.c: (twin_clock_start):
+	* twin_demo.c: (twin_example_start), (twin_line_start),
+	(twin_circletext_start), (twin_quickbrown_start),
+	(twin_ascii_start), (twin_jelly_start):
+	* twin_text.c: (twin_text_start):
+	Change enumerated constants to include Twin prefix
+	
+	* twin_hello.c: (_twin_hello_timeout), (twin_hello_start):
+	Add new widget-based demo
+	
+	* xtwin.c: (main):
+	Start widget based demo
+
+2004-10-25  Keith Packard  <keithp@keithp.com>
+
+	* Makefile.am:
+	* configure.ac:
+	* twin_dispatch.c: (twin_dispatch):
+	* twin_file.c: (_twin_file_order), (_twin_run_file),
+	(twin_set_file), (twin_clear_file):
+	* twin_queue.c: (_twin_queue_insert), (_twin_queue_remove),
+	(_twin_queue_delete), (_twin_queue_set_order),
+	(_twin_queue_review_order):
+	* twin_timeout.c: (_twin_timeout_order), (_twin_queue_timeout),
+	(_twin_run_timeout), (twin_set_timeout), (twin_clear_timeout),
+	(_twin_timeout_delay), (twin_now):
+	* twin_work.c: (_twin_work_order), (_twin_queue_work),
+	(_twin_run_work), (twin_set_work), (twin_clear_work):
+	* twinint.h:
+	Add dispatch stuff to manage timeouts, workprocs and files.
+	Remove thread stuff
+	
+	* twin.h:
+	* twin_clock.c: (twin_clock_set_transform), (twin_clock_hand),
+	(twin_clock_minute_angle), (twin_clock_face), (twin_clock_timeout),
+	(twin_clock_start):
+	* twin_clock.h:
+	* twin_demo.c: (twin_example_start), (twin_line_start),
+	(twin_circletext_start), (twin_quickbrown_start),
+	(twin_ascii_start), (twin_jelly_start), (twin_extents_start),
+	(twin_demo_start):
+	* twin_demo.h:
+	* twin_text.c: (twin_text_start):
+	* twin_text.h:
+	* xtwin.c: (main):
+	Split demos into separate files
+	
+	* twin_draw.c: (twin_composite), (twin_fill):
+	Make drawing origin match clip rectangle.
+
+	* twin_fedit
+	Add glyph editor to CVS to preserve it
+	
+	* twin_icon.c: (twin_icon_draw):
+	Add scalable icons
+
+	* twin_path.c: (_twin_path_sfinish), (_twin_path_smove),
+	(twin_path_close), (twin_path_circle), (twin_path_ellipse),
+	(twin_path_append), (twin_composite_path):
+	Separate 'closing' a subpath from 'finishing' a subpath; the
+	former adds a point back to the start while the latter just
+	leaves the path unclosed and prepares for a new subpath.
+	
+	* twin_pixmap.c: (twin_pixmap_create), (twin_pixmap_show),
+	(twin_pixmap_hide), (twin_pixmap_clip), (twin_pixmap_current_clip),
+	(twin_pixmap_restore_clip), (twin_pixmap_reset_clip),
+	(twin_pixmap_damage), (twin_pixmap_move):
+	* twin_poly.c: (_twin_edge_build), (_span_fill), (_twin_edge_fill),
+	(twin_fill_path):
+	* twin_screen.c: (twin_screen_create):
+	Eliminate locking, add clipping.
+
+	* twin_window.c: (twin_window_create), (twin_window_configure),
+	(twin_window_frame):
+	Clean up title drawing, use clipping
+	
+	* twin_x11.c: (twin_x11_read_events), (twin_x11_work),
+	(twin_x11_create), (twin_x11_destroy), (twin_x11_damage):
+	* twin_x11.h:
+	Eliminate locking, use dispatch stuff
+
+2004-10-05  Keith Packard  <keithp@keithp.com>
+
+	* Makefile.am:
+	* twin.h:
+	* twin_pattern.c: (twin_make_pattern):
+	* twin_pixmap.c: (twin_pixmap_create_const):
+	Add patterns.
+	
+	* twin_screen.c: (twin_screen_create), (twin_screen_update),
+	(twin_screen_set_background), (twin_screen_get_background):
+	Add screen backgrounds
+	
+	* twin_window.c: (twin_window_create), (twin_window_style_size),
+	(twin_window_frame), (twin_window_draw):
+	Eliminate spurious border bits
+	
+	* xtwin.c: (twin_clock), (twin_text_app), (twin_start_clock),
+	(main):
+	Add text display applet
+
+2004-10-05  Keith Packard  <keithp@keithp.com>
+
+	* Makefile.am:
+	* twin.h:
+	* twin_draw.c: (twin_fill):
+	* twin_path.c: (twin_composite_path):
+	* twin_pixmap.c: (twin_pixmap_create), (twin_pixmap_show),
+	(twin_pixmap_hide), (_twin_pixmap_fetch),
+	(twin_pixmap_transparent), (twin_pixmap_move),
+	(twin_pixmap_dispatch):
+	* twin_screen.c: (twin_screen_create), (twin_screen_lock),
+	(twin_screen_unlock), (twin_screen_update),
+	(twin_screen_set_active), (twin_screen_get_active),
+	(twin_screen_dispatch):
+	* twin_thread.c: (twin_mutex_init), (twin_mutex_lock),
+	(twin_mutex_unlock), (twin_cond_init), (twin_cond_broadcast),
+	(twin_cond_wait), (twin_thread_create):
+	* twin_window.c: (twin_window_create), (twin_window_destroy),
+	(twin_window_show), (twin_window_hide), (twin_window_configure),
+	(twin_window_style_size), (twin_window_set_name),
+	(twin_window_frame), (twin_window_draw), (twin_window_dispatch):
+	* twin_x11.c: (_twin_x11_put_begin), (_twin_x11_put_span),
+	(twin_x11_damage_thread), (twin_x11_event_thread),
+	(twin_x11_screen_damaged), (twin_x11_create), (twin_x11_destroy):
+	* twin_x11.h:
+	* xtwin.c: (twin_clock_set_transform), (twin_clock_hand),
+	(twin_clock_face), (twin_clock), (twin_app_thread),
+	(twin_start_app), (twin_start_clock), (main):
+	Add the beginings of event dispatch and a bit of
+	window management including titles.  Default event dispatcher
+	does restacking and motion.
+
+2004-10-05  Keith Packard  <keithp@keithp.com>
+
+	* twin.h:
+	* twin_draw.c: (twin_composite), (twin_fill):
+	* twin_matrix.c: (twin_matrix_multiply), (twin_matrix_translate),
+	(twin_matrix_scale), (twin_matrix_rotate):
+	* twin_path.c: (twin_path_ellipse), (twin_path_set_font_style),
+	(twin_composite_path), (twin_composite_stroke):
+	* twin_pixmap.c: (twin_pixmap_create), (twin_pixmap_pointer),
+	(twin_pixmap_damage), (twin_pixmap_move):
+	* twin_poly.c: (twin_fill_path):
+	* twin_screen.c: (twin_screen_create), (twin_screen_damage),
+	(twin_screen_resize), (twin_screen_update):
+	* twin_x11.c: (_twin_x11_put_begin), (_twin_x11_put_span):
+	* twinint.h:
+	Update API to use twin_ types for most everything.
+	
+	* twin_font.c: (_twin_text_compute_info),
+	(_twin_text_compute_snap), (_twin_text_compute_pen), (_twin_snap),
+	(twin_has_ucs4), (_twin_glyph_width), (twin_text_metrics_ucs4),
+	(twin_path_ucs4):
+	Rework snapping to correctly snap vertical and horizontal text
+	on pixel boundaries.
+	
+	* xtwin.c: (main):
+	Change clock watermark
+
+2004-10-04  Keith Packard  <keithp@keithp.com>
+
+	* twin_primitive.c: (in_over), (over):
+	* twinint.h:
+	Recognize a few special cases to speed up operations
+	
+	* xtwin.c: (twin_clock_set_transform), (twin_clock_minute_angle),
+	(twin_clock_face), (twin_clock):
+	Fix angular problems in hand position by rotating everything 90
+	degrees.
+
+2004-10-04  Keith Packard  <keithp@keithp.com>
+
+	* twin_font.c: (twin_has_ucs4), (twin_path_ucs4):
+	Delete old glyph representation support code.
+	
+	* twin_geom.c: (_twin_distance_to_line_squared):
+	Oops -- overflow not handled correctly in distance functions.
+	
+	* twin_glyphs.c:
+	Replace new glyphs with versions using splines.
+
+	* xtwin.c: (main):
+	Whack around the default presentation a bit more
+
+2004-10-04  Keith Packard  <keithp@keithp.com>
+
+	* twin.h:
+	* twin_draw.c: (twin_composite):
+	Fix a clipping bug
+	
+	* twinint.h:
+	* twin_font.c: (_snap), (_twin_g_base), (_twin_pen_size),
+	(twin_text_metrics_ucs4), (twin_add_snap), (twin_n_in_spline),
+	(twin_spline_fit), (_ucs4_string), (px), (py), (twin_dump_glyphs),
+	(twin_path_ucs4), (twin_text_metrics_utf8):
+	* twin_glyphs.c:
+	Change glyph representation to allow splines and include metrics.
+
+	* twin_matrix.c: (_twin_matrix_expand):
+	* twin_path.c: (twin_path_rmove), (twin_path_rdraw):
+	Add some new helper functions.
+	
+	* twin_spline.c:
+	Expose _twin_path_scurve for glyphs
+	
+	* twin_trig.c:
+	Increase sin table precision.
+	
+	* twin_x11.c: (_twin_x11_put_span), (twin_x11_screen_damaged),
+	(twin_x11_damage):
+	Fix off-by-one error in y position.
+	Lock screen while adding expose damage
+	
+	* xtwin.c: (twin_clock_face), (twin_clock), (main):
+	Change clock appearance.  Use corrected glyph metrics
+
+2004-10-01  Keith Packard  <keithp@keithp.com>
+
+	* twin.h:
+	* twin_fixed.c:
+	* twin_font.c: (twin_text_metrics_ucs4), (twin_path_ucs4),
+	(twin_text_metrics_utf8):
+	* twin_screen.c: (twin_screen_create), (twin_screen_update):
+	* twin_x11.c: (_twin_x11_put_begin), (_twin_x11_put_span),
+	* twin_x11.h:
+	(twin_x11_create):
+	Add put_begin to screen structure so that the backend can batch
+	updates.
+	Add twin_int_to_fixed.
+	Inline twin_fixed_mul and twin_fixed_div using int64_t.
+	Add twin_text_metrics_utf8.
+	Hard-code the max number of vertices in a glyph.
+	Set various ICCCM properties to make X wms happy.
+
+	* twin_path.c: (_twin_matrix_max_radius), (twin_path_circle):
+	Use better approximation of ellipse major axis radius when
+	drawing circles.
+	
+	* twin_poly.c: (_twin_edge_fill):
+	Compiler warning.
+
+	* twinint.h:
+	Delete duplicate twin_over definition
+	
+	* xtwin.c: (twin_clock_hand), (twin_clock_face), (twin_clock),
+	(twin_app_thread), (twin_start_app), (twin_start_clock), (main):
+	Allow for multiple clocks, and add watermark.  Note that
+	text metrics are quite broken currently.
+
+2004-09-30  Keith Packard  <keithp@keithp.com>
+
+	* Makefile.am:
+	* configure.ac:
+	* twin.h:
+	* twin_draw.c: (twin_composite), (twin_fill):
+	* twin_font.c: (_snap), (_twin_pen_size), (twin_text_metrics_ucs4),
+	(twin_path_ucs4), (twin_width_utf8):
+	Handle unhinted text.
+	
+	* twin_path.c: (twin_path_close), (twin_path_bounds),
+	(twin_composite_path), (twin_paint_path), (twin_composite_stroke),
+	(twin_paint_stroke):
+	Add helper functions 
+	
+	* twin_pixmap.c: (twin_pixmap_create), (twin_pixmap_show),
+	(twin_pixmap_hide), (twin_pixmap_enable_update),
+	(twin_pixmap_disable_update), (twin_pixmap_lock),
+	(twin_pixmap_unlock):
+	Lock pixmaps during drawing
+	
+	* twin_poly.c: (_twin_edge_build), (twin_fill_path):
+	* twin_screen.c: (twin_screen_create), (twin_screen_lock),
+	(twin_screen_unlock), (twin_screen_register_damaged),
+	(twin_screen_enable_update), (twin_screen_disable_update),
+	(twin_screen_damage), (twin_screen_update):
+	Disable screen updates while applications are busy
+	
+	* twin_x11.c: (twin_x11_damage_thread), (twin_x11_event_thread),
+	(twin_x11_screen_damaged), (twin_x11_create), (twin_x11_destroy):
+	Add threads to manage events and redisplay
+
+	* twinint.h:
+	* xtwin.c: (twin_clock_hand), (twin_clock_minute_angle),
+	(twin_clock_face), (twin_clock), (main):
+	Paint a clock
+
+2004-09-27  Keith Packard  <keithp@keithp.com>
+
+	* twin.h:
+	* twin_fixed.c: (twin_fixed_div), (twin_fixed_sqrt),
+	(_twin_sfixed_sqrt):
+	Add some more fixed point functions
+	
+	* twin_font.c: (_snap), (_add_snap), (_twin_pen_size),
+	(twin_text_metrics_ucs4), (twin_path_ucs4), (twin_width_ucs4):
+	Reimplement text snapping.  Note that things are snapped to
+	user units, not pixels.  Snapping to pixels requires some
+	thought about rotating transformations.
+	
+	* twin_matrix.c: (_twin_matrix_len):
+	* twin_path.c: (twin_path_close), (twin_path_circle):
+	Oops.  Closed paths don't necessarily need to join ends,
+	but circles do.
+	
+	* twinint.h:
+	* xtwin.c: (main):
+	Random new tests.
+
+2004-09-27  Keith Packard  <keithp@keithp.com>
+
+	* Makefile.am:
+	* twin.h:
+	* twin_convolve.c: (_twin_path_leftpoint), (_around_order),
+	(_angle), (_twin_subpath_convolve):
+	* twin_fixed.c: (twin_fixed_mul):
+	* twin_font.c: (twin_path_ucs4), (twin_width_ucs4),
+	(twin_path_utf8):
+	* twin_geom.c: (_twin_distance_to_point_squared),
+	(_twin_distance_to_line_squared):
+	* twin_hull.c: (_twin_slope_init), (_twin_hull_create),
+	(_twin_hull_vertex_compare), (_twin_hull_eliminate_concave),
+	(_twin_hull_to_path):
+	* twin_matrix.c: (_twin_dump_matrix), (_twin_matrix_multiply),
+	(twin_matrix_identity), (twin_matrix_translate),
+	(twin_matrix_scale), (_twin_matrix_determinant),
+	(twin_matrix_rotate), (_twin_matrix_x), (_twin_matrix_y),
+	(_twin_matrix_dx), (_twin_matrix_dy):
+	* twin_path.c: (_twin_current_subpath_len),
+	(_twin_path_current_spoint), (_twin_path_subpath_first_spoint),
+	(_twin_path_smove), (_twin_path_sdraw), (twin_path_move),
+	(twin_path_draw), (twin_path_close), (twin_path_circle),
+	(twin_path_set_matrix), (twin_path_current_matrix),
+	(twin_path_identity), (twin_path_translate), (twin_path_scale),
+	(twin_path_rotate), (twin_path_set_font_size),
+	(twin_path_current_font_size), (twin_path_set_font_style),
+	(twin_path_current_font_style), (twin_path_append),
+	(twin_path_save), (twin_path_restore), (twin_path_create):
+	* twin_poly.c: (_edge_step_by), (_twin_sfixed_grid_ceil),
+	(_twin_edge_build), (_span_fill), (_twin_edge_fill),
+	(twin_fill_path):
+	* twin_spline.c: (_lerp_half), (_de_casteljau),
+	(_twin_spline_decompose), (_twin_path_scurve), (twin_path_curve):
+	* twin_trig.c: (twin_sin), (twin_cos), (twin_tan):
+	* twinint.h:
+	* xtwin.c: (main):
+	Add affine transformation support.
+	Fix convex hull to eliminate all points colinear with extreme.
+	Note that text snapping is currently broken.
+
+2004-09-26  Keith Packard  <keithp@keithp.com>
+
+	* twin_convolve.c: (_twin_subpath_convolve):
+	Eliminate special case for closed paths.  Just draw caps at
+	both ends and accept that the resulting path isn't minimal
+	in all cases.  This eliminates the weird results from said
+	attempted minimal path with large pens and small curves.
+	It also eliminated a lot of extra code from this function.
+	
+	* twin_font.c: (twin_path_ucs4):
+	Fix font baseline value (should be 9).  Take pen size
+	into account when computing positions so that glyphs rest
+	on the baseline instead of painting on top of it.
+
+	* xtwin.c: (main):
+	Show baseline in huge text sample
+
+2004-09-26  Keith Packard  <keithp@keithp.com>
+
+	* twin.h:
+	* twin_convolve.c: (_twin_path_leftpoint), (_twin_path_step),
+	(_twin_subpath_convolve):
+	Hmm.  Not sure this is right, but I'm giving it a try.
+	Recognize closed paths and attempt to construct two
+	disjoint paths as their convolution with the pen.  This
+	appears to break when the path has a radius of curvature smaller
+	than the radius of the pen.  I'm committing it to CVS mostly
+	so I don't lose the code; I will shortly commit a patch which
+	eliminates the check for a closed path.
+
+	Oh, one correct change is to _twin_path_leftpoint which used
+	to try to be clever about point selection.  Now that pens are
+	forced to be convex, the correct point to use is the one furthest
+	from the line.
+	
+	* twin_path.c: (twin_path_fill), (twin_path_append):
+	Ignore subpaths containing a single point.
+	Add 'twin_path_append' to glue one path into another.
+
+	* twin_poly.c: (_twin_edge_build), (_twin_edge_fill):
+	Add debug output that shows vertices of polygons
+	
+	* xtwin.c: (main):
+	Code to test convolution change mentioned above
+
+2004-09-25  Keith Packard  <keithp@keithp.com>
+
+	* twin_font.c:
+	Spurious ) in file
+
+2004-09-25  Keith Packard  <keithp@keithp.com>
+
+	* twin_font.c: (_snap), (twin_path_ucs4):
+	Reduce emboldening to +50% stroke thickness.
+	Clean up debug code.
+	Eliminate some dead code.
+	Try to adjust width computations a bit.  Still not right.
+	* xtwin.c: (main):
+	draw in more colors
+
+2004-09-24  Keith Packard  <keithp@keithp.com>
+
+	* Makefile.am:
+	* twin.h:
+	Switch to just supporting stroke fonts
+	* twin_font.c: (twin_has_ucs4), (_twin_ucs4_base),
+	(_twin_ucs4_points), (twin_path_ucs4), (twin_ucs4_width),
+	(twin_path_string):
+	Finish needed stroke font API.
+	
+	* twin_glyphs.c:
+	Elimiate all but ascii glyphs, use offset table to
+	eliminate table of pointers (which can't be const)
+	
+	* twin_vera.c:
+	Remove twin_vera.c
+	
+	* twinint.h:
+	Change glyph structures around for offsets and ascii only
+	
+	* xtwin.c: (main):
+	Few more cases to show ascii text support
+
+2004-09-24  Keith Packard  <keithp@keithp.com>
+
+	* Makefile.am:
+	* twin_hull.c: (_twin_slope_init), (_twin_hull_create),
+	(_twin_slope_compare), (_twin_hull_vertex_compare),
+	(_twin_hull_prev_valid), (_twin_hull_next_valid),
+	(_twin_hull_eliminate_concave), (_twin_hull_to_path),
+	(twin_path_convex_hull):
+	Add convex hull algorithm from cairo sources.  Used to
+	constrain pens to convex shapes so that the convolution
+	algorithm works correctly.
+
+	* twin.h:
+	Reduce default tolerance to 1/16 of a pixel
+	
+	* twin_convolve.c: (_angle), (_twin_subpath_convolve),
+	(twin_path_convolve):
+	Use convex hull of pen.
+
+	* twin_font.c: (compare_snap), (_snap), (_add_snap),
+	(twin_path_glyph), (twin_glyph_width), (twin_path_string):
+	Snap horizontal and vertical elements of glyphs to
+	pixel boundaries.  Snap stem widths to integer amounts.
+	Add slanting and emboldening
+	
+	* twin_glyphs.c:
+	Add space and box
+	
+	* twin_primitive.c:
+	Avoid using __inline as it increases size dramatically
+	
+	* twin_spline.c: (_twin_spline_decompose):
+	Use <= tolerance_squared as that may be zero
+	
+	* xtwin.c: (main):
+	Swizzle code to show off recent changes
+
+2004-09-23  Keith Packard  <keithp@keithp.com>
+
+ 	* Makefile.am:
+	* configure.ac:
+	* twin.h:
+	Fix twin_fixed_floor to work for negative values correctly
+	Add twin_path_cur_point
+	
+	* twin_convolve.c: (_twin_path_step), (_around_order), (_angle),
+	(_twin_subpath_convolve), (twin_path_convolve):
+	fix twin_path_step to actually handle duplicate points.
+	Change 'clockwise' to 'around_order' so that all three possible
+	results are returned (clockwise, parallel and counterclockwise)
+	Handle disjoint strokes
+
+	* twin_font.c: (twin_has_glyph), (twin_path_glyph),
+	(twin_glyph_width), (twin_path_string), (twin_path_fglyph),
+	(twin_path_ucs4), (_twin_utf8_to_ucs4), (twin_path_utf8):
+	Add outline and stroke font support (pick one and remove the other)
+	
+	* twin_glyphs.c:
+	Huge array of stroke fonts from Hershey.  Pick appropriate subset
+	and remove extra glyphs (there are a lot here)
+	
+	* twin_path.c: (_twin_cur_subpath_len), (twin_path_cur_point),
+	(twin_path_move), (twin_path_draw), (twin_path_close):
+	Eliminate repeated move and close, eliminate duplicate draw.
+	
+	* twin_poly.c: (_twin_edge_build), (_span_fill), (_twin_edge_fill):
+	Add support for 1, 4, 16 and 64 samples.  16 appears to be the
+	magic sweet spot.
+	
+	* twin_ttf/Makefile.am:
+	* twin_ttf/Vera.ttf:
+	* twin_ttf/twin_ttf.c: (pos), (command), (cpos), (ucs4_to_utf8),
+	(glyph), (outline_moveto), (outline_lineto), (outline_conicto),
+	(outline_cubicto), (ucs_page), (ucs_first_in_page), (sanitize),
+	(facename), (convert_font), (main):
+	Convert "real" outline fonts to twin built-ins
+
+	* twin_vera.c:
+	Converted version of Bitstream Vera Sans Roman
+
+	* twinint.h:
+	* xtwin.c: (main):
+
+2004-09-21  Keith Packard  <keithp@keithp.com>
+
+	* twin.h:
+	* twinint.h:
+	Add a few definitions
+
+	* twin_convolve.c: (_twin_path_leftpoint), (twin_path_convolve):
+	Find pen starting point as closest to the normal to the path.
+	Restructure convolve loop to be easier to understand
+	
+	* twin_path.c: (twin_path_circle):
+	Round circle coordinates instead of truncating them
+	
+	* twin_poly.c: (_twin_fixed_grid_ceil), (_twin_edge_build),
+	(_span_fill), (_twin_edge_fill):
+	Move sample grid by 1/2 sample step.
+	Clip polygons to mask pixmap.
+	Modest performance improvement in span filling.
+	Fix end case to remove edges before stepping.
+	
+	* xtwin.c: (main):
+	Stroke a path.
+
+2004-09-21  Keith Packard  <keithp@keithp.com>
+
+	* Makefile.am:
+	* twin.h:
+	* twin_convolve.c: (_twin_path_leftmost), (_twin_path_step),
+	(_clockwise), (twin_path_convolve):
+	Add convolution.  Pen starting position needs work.
+	
+	* twin_geom.c: (_twin_distance_to_point_squared),
+	(_twin_distance_to_line_squared):
+	* twin_spline.c: (_twin_spline_error_squared), (twin_path_curve):
+	* twinint.h:
+	Move shared geometric functions to new file
+	
+	* twin_path.c: (_sin), (_cos), (twin_path_circle),
+	(twin_path_fill):
+	Add twin_path_circle to generate pens.
+	Fix path edge generator to handle last subpath right.
+
+	* twin_poly.c: (_twin_edge_build):
+	Skip vertices which don't span a sample row
+	
+	* xtwin.c: (main):
+	test convolutions
+
+2004-09-20  Keith Packard  <keithp@keithp.com>
+
+	* .cvsignore:
+	Add .cvsignore file
+	
+	* architecture:
+	Mention path primitives
+	* Makefile.am:
+	* twin.h:
+	* twinint.h:
+	Add paths
+	
+	* twin_draw.c: (twin_composite):
+	Eliminate some unused variables.
+	
+	* twin_path.c: (twin_path_move), (twin_path_draw),
+	(twin_path_close), (twin_path_fill), (twin_path_empty),
+	(twin_path_create), (twin_path_destroy):
+	Simple path construction
+	
+	* twin_poly.c: (_edge_compare_y), (_edge_step_by), (_dump_edge),
+	(_twin_edge_build), (_span_fill), (_twin_edge_fill),
+	(twin_polygon):
+	Anti-aliased polygon fill code
+	
+	* twin_screen.c:
+	Change twin_bool to twin_bool_t
+	
+	* twin_spline.c: (_lerp_half), (_de_casteljau),
+	(_distance_squared_to_point), (_distance_squared_to_segment),
+	(_twin_spline_error_squared), (_twin_spline_decompose),
+	(twin_path_curve):
+	Append cubic Bézier splines to paths
+
+	* xtwin.c: (main):
+	Test paths
